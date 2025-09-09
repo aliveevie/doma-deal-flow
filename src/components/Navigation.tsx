@@ -1,11 +1,12 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Wallet, Menu, X, MessageCircle, TrendingUp, User } from "lucide-react";
+import { Menu, MessageCircle, TrendingUp, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 
 const Navigation = () => {
-  const [isConnected, setIsConnected] = useState(false);
+  const { address, isConnected } = useAccount();
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -43,28 +44,15 @@ const Navigation = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            {isConnected ? (
-              <div className="flex items-center space-x-3">
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/u/0x123...">
-                    <User className="h-4 w-4 mr-1" />
-                    Profile
-                  </Link>
-                </Button>
-                <Button variant="outline" size="sm">
-                  0x123...abc
-                </Button>
-              </div>
-            ) : (
-              <Button 
-                variant="wallet" 
-                onClick={() => setIsConnected(true)}
-                className="shadow-soft"
-              >
-                <Wallet className="h-4 w-4 mr-2" />
-                Connect Wallet
+            {isConnected && address ? (
+              <Button variant="ghost" size="sm" asChild>
+                <Link to={`/u/${address}`}>
+                  <User className="h-4 w-4 mr-1" />
+                  Profile
+                </Link>
               </Button>
-            )}
+            ) : null}
+            <ConnectButton />
           </div>
 
           {/* Mobile Menu */}
@@ -88,28 +76,17 @@ const Navigation = () => {
                     </Link>
                   ))}
                   <div className="pt-4 border-t border-border">
-                    {isConnected ? (
-                      <div className="space-y-3">
-                        <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
-                          <Link to="/u/0x123...">
-                            <User className="h-4 w-4 mr-2" />
-                            Profile
-                          </Link>
-                        </Button>
-                        <Button variant="outline" size="sm" className="w-full">
-                          0x123...abc
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button 
-                        variant="wallet" 
-                        onClick={() => setIsConnected(true)}
-                        className="w-full"
-                      >
-                        <Wallet className="h-4 w-4 mr-2" />
-                        Connect Wallet
+                    {isConnected && address ? (
+                      <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
+                        <Link to={`/u/${address}`}>
+                          <User className="h-4 w-4 mr-2" />
+                          Profile
+                        </Link>
                       </Button>
-                    )}
+                    ) : null}
+                    <div className="mt-4">
+                      <ConnectButton />
+                    </div>
                   </div>
                 </div>
               </SheetContent>
