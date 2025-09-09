@@ -8,7 +8,7 @@ import {
   coinbaseWallet,
 } from '@rainbow-me/rainbowkit/wallets'
 
-const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || 'demo-project-id'
+const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID || 'demo-project-id'
 
 const connectors = connectorsForWallets(
   [
